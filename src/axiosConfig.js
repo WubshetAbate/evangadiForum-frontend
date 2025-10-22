@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosBase = axios.create({
-  baseURL: "https://evangadiforum-backend-1-syd7.onrender.com/api", // Render deployment
+  baseURL: "https://evangadiforum-backend-1-syd7.onrender.com/api", // Render new deployment
 });
 
 export default axiosBase;
