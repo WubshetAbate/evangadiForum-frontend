@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import API from "../../axiosConfig";
+import axios from "../../axiosConfig";
 import "./ResetPassword.css";
 
 const ResetPassword = () => {
@@ -75,7 +75,7 @@ const ResetPassword = () => {
     setLoading(true);
 
     try {
-      const response = await API.post("/users/reset-password", {
+      const response = await axios.post("/users/reset-password", {
         email,
         token,
         password: formData.password,

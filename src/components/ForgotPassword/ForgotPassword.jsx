@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import API from "../../axiosConfig";
+import axios from "../../axiosConfig";
 import "./ForgotPassword.css";
 
 const ForgotPassword = () => {
@@ -17,10 +17,10 @@ const ForgotPassword = () => {
     setLoading(true);
 
     try {
-      const response = await API.post("/users/forgot-password", { email });
+      const response = await axios.post("/users/forgot-password", { email });
       console.log("✅ Forgot password response:", response.data);
       setSuccess("OTP has been sent to your email. Please check your inbox.");
-      
+
       // Navigate to OTP verification page with email
       navigate("/verify-otp", { state: { email } });
     } catch (err) {
@@ -40,7 +40,8 @@ const ForgotPassword = () => {
           <div className="auth-form-card">
             <h2 className="form-heading">Forgot Password</h2>
             <p className="form-subheading">
-              Enter your email address and we'll send you an OTP to reset your password.
+              Enter your email address and we'll send you an OTP to reset your
+              password.
             </p>
 
             {error && <div className="error-message">{error}</div>}
@@ -75,10 +76,12 @@ const ForgotPassword = () => {
           <h1 className="about-title">Password Recovery</h1>
           <div className="about-text">
             <p>
-              We'll send you a secure one-time password (OTP) to your registered email address.
+              We'll send you a secure one-time password (OTP) to your registered
+              email address.
             </p>
             <p>
-              This OTP will be valid for 10 minutes. Please check your spam folder if you don't see the email.
+              This OTP will be valid for 10 minutes. Please check your spam
+              folder if you don't see the email.
             </p>
           </div>
           <div className="decoration-circle"></div>

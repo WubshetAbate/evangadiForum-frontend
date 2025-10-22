@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import API from "../../axiosConfig";
+import axios from "../../axiosConfig";
 import "./VerifyOTP.css";
 
 const VerifyOTP = () => {
@@ -32,7 +32,7 @@ const VerifyOTP = () => {
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
   const handleSubmit = async (e) => {
@@ -41,24 +41,22 @@ const VerifyOTP = () => {
     setLoading(true);
 
     try {
-      const response = await API.post("/users/verify-otp", { 
-        email, 
-        otp: otp.trim() 
+      const response = await axios.post("/users/verify-otp", {
+        email,
+        otp: otp.trim(),
       });
       console.log("✅ OTP verification response:", response.data);
-      
+
       // Navigate to reset password page
-      navigate("/reset-password", { 
-        state: { 
-          email, 
-          token: response.data.token 
-        } 
+      navigate("/reset-password", {
+        state: {
+          email,
+          token: response.data.token,
+        },
       });
     } catch (err) {
       console.error("❌ OTP verification error:", err.response || err);
-      setError(
-        err.response?.data?.msg || "Invalid OTP. Please try again."
-      );
+      setError(err.response?.data?.msg || "Invalid OTP. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -69,7 +67,7 @@ const VerifyOTP = () => {
     setResendLoading(true);
 
     try {
-      await API.post("/users/forgot-password", { email });
+      await axios.post("/users/forgot-password", { email });
       setTimeLeft(600); // Reset timer
       setError(""); // Clear any previous errors
     } catch (err) {
@@ -96,7 +94,8 @@ const VerifyOTP = () => {
               We've sent a 6-digit code to <strong>{email}</strong>
             </p>
             <p className="timer-text">
-              Code expires in: <span className="timer">{formatTime(timeLeft)}</span>
+              Code expires in:{" "}
+              <span className="timer">{formatTime(timeLeft)}</span>
             </p>
 
             {error && <div className="error-message">{error}</div>}
@@ -107,7 +106,9 @@ const VerifyOTP = () => {
                   type="text"
                   name="otp"
                   value={otp}
-                  onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                  onChange={(e) =>
+                    setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))
+                  }
                   placeholder="Enter 6-digit code"
                   className="otp-input"
                   maxLength="6"
@@ -115,18 +116,16 @@ const VerifyOTP = () => {
                 />
               </div>
 
-              <button 
-                type="submit" 
-                className="submit-btn" 
+              <button
+                type="submit"
+                className="submit-btn"
                 disabled={loading || otp.length !== 6}
               >
                 {loading ? "Verifying..." : "Verify OTP"}
               </button>
 
               <div className="resend-section">
-                <p className="resend-text">
-                  Didn't receive the code?
-                </p>
+                <p className="resend-text">Didn't receive the code?</p>
                 <button
                   type="button"
                   className="resend-btn"
@@ -138,7 +137,7 @@ const VerifyOTP = () => {
               </div>
 
               <div className="auth-links">
-                <button 
+                <button
                   type="button"
                   className="back-link"
                   onClick={() => navigate("/forgot-password")}
@@ -154,11 +153,10 @@ const VerifyOTP = () => {
           <span className="about-label">Security</span>
           <h1 className="about-title">OTP Verification</h1>
           <div className="about-text">
+            <p>Please enter the 6-digit code we sent to your email address.</p>
             <p>
-              Please enter the 6-digit code we sent to your email address.
-            </p>
-            <p>
-              The code is valid for 10 minutes. If you don't receive it, check your spam folder or request a new code.
+              The code is valid for 10 minutes. If you don't receive it, check
+              your spam folder or request a new code.
             </p>
           </div>
           <div className="decoration-circle"></div>
